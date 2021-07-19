@@ -1,4 +1,24 @@
-![header](imgs/header.jpg)
+
+# This repository
+
+I've created this repository to aid running of DeepMind's AlphaFold 2 code using minimal data requirements, for a particular protein sequence [6y4f](https://www.rcsb.org/structure/6Y4F) (both the pdb structure and fasta sequence can be obtained here). The input features I got when I ran the code on a non-gpu based google cloud instance are provided in the `6y4f` folder.
+
+```python
+from Bio.PDB import PDBParser
+from nglview import show_biopython 
+
+file_loc = '/Users/adityaravuri/Downloads/'
+
+def get_view(file):
+    return show_biopython(PDBParser().get_structure('6y4f', file_loc + file))
+
+get_view('6y4f/6y4f.pdb') # true
+get_view('6y4f/ranked_0.pdb') # predicted
+
+```
+
+![True Structure](imgs/true.png)
+![Predicted Structure](imgs/pred.png)
 
 # AlphaFold
 
