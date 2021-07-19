@@ -1,8 +1,0 @@
-# Ignore everything
-*
-
-# But not these files...
-!.gitignore
-!features.pkl
-!ranked_0.pdb
-# etc...
