@@ -51,54 +51,22 @@ Running `replication_script.py` should output the following expected outputs.
 
 ## AlphaFold output
 
-The outputs will be in a subfolder of `output_dir` in `run_docker.py`. They
-include the computed MSAs, unrelaxed structures, relaxed structures, ranked
-structures, raw model outputs, prediction metadata, and section timings. The
-`output_dir` directory will have the following structure:
+The outputs of the script above include the computed MSAs
+unrelaxed structures, relaxed structures, raw model outputs.
+The `output` directory will have the following structure:
 
 ```
 output_dir/
-    features.pkl
-    ranked_{0,1,2,3,4}.pdb
-    ranking_debug.json
-    relaxed_model_{1,2,3,4,5}.pdb
-    result_model_{1,2,3,4,5}.pkl
-    timings.json
-    unrelaxed_model_{1,2,3,4,5}.pdb
-    msas/
-        bfd_uniclust_hits.a3m
-        mgnify_hits.sto
-        uniref90_hits.sto
+    ranked_0.pdb
 ```
 
 The contents of each output file are as follows:
 
-*   `features.pkl` – A `pickle` file containing the input feature Numpy arrays
-    used by the models to produce the structures.
-*   `unrelaxed_model_*.pdb` – A PDB format text file containing the predicted
-    structure, exactly as outputted by the model.
-*   `relaxed_model_*.pdb` – A PDB format text file containing the predicted
-    structure, after performing an Amber relaxation procedure on the unrelaxed
-    structure prediction, see Jumper et al. 2021, Suppl. Methods 1.8.6 for
-    details.
 *   `ranked_*.pdb` – A PDB format text file containing the relaxed predicted
     structures, after reordering by model confidence. Here `ranked_0.pdb` should
-    contain the prediction with the highest confidence, and `ranked_4.pdb` the
-    prediction with the lowest confidence. To rank model confidence, we use
+    contain the prediction with the highest confidence. To rank model confidence, DeepMind uses
     predicted LDDT (pLDDT), see Jumper et al. 2021, Suppl. Methods 1.9.6 for
     details.
-*   `ranking_debug.json` – A JSON format text file containing the pLDDT values
-    used to perform the model ranking, and a mapping back to the original model
-    names.
-*   `timings.json` – A JSON format text file containing the times taken to run
-    each section of the AlphaFold pipeline.
-*   `msas/` - A directory containing the files describing the various genetic
-    tool hits that were used to construct the input MSA.
-*   `result_model_*.pkl` – A `pickle` file containing a nested dictionary of the
-    various Numpy arrays directly produced by the model. In addition to the
-    output of the structure module, this includes auxiliary outputs such as
-    distograms and pLDDT scores. If using the pTM models then the pTM logits
-    will also be contained in this file.
 
 The replicated outputs of this repository are shown below (to be tested).
 
