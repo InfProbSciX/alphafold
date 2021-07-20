@@ -3,8 +3,9 @@
 
 # But not these files...
 !.gitignore
-!features.pkl
+!template_features.pkl
 !ranked_0.pdb
 !6y4f.fasta
 !6y4f.pdb
+!msas/*
 # etc...

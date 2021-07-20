@@ -17,6 +17,7 @@
 import os
 from typing import Mapping, Sequence
 
+import pickle
 import numpy as np
 
 # Internal import (7716).
@@ -80,89 +81,38 @@ def make_msa_features(
 
 
 class DataPipeline:
-  """Runs the alignment tools and assembles the input features."""
+  def __init__(self):
+    self.mgnify_max_hits = 501
 
-  def __init__(self,
-               jackhmmer_binary_path: str,
-               hhblits_binary_path: str,
-               hhsearch_binary_path: str,
-               uniref90_database_path: str,
-               mgnify_database_path: str,
-               bfd_database_path: str,
-               uniclust30_database_path: str,
-               pdb70_database_path: str,
-               template_featurizer: templates.TemplateHitFeaturizer,
-               mgnify_max_hits: int = 501,
-               uniref_max_hits: int = 10000):
-    """Constructs a feature dict for a given FASTA file."""
-    self.jackhmmer_uniref90_runner = jackhmmer.Jackhmmer(
-        binary_path=jackhmmer_binary_path,
-        database_path=uniref90_database_path)
-    self.hhblits_bfd_uniclust_runner = hhblits.HHBlits(
-        binary_path=hhblits_binary_path,
-        databases=[bfd_database_path, uniclust30_database_path])
-    self.jackhmmer_mgnify_runner = jackhmmer.Jackhmmer(
-        binary_path=jackhmmer_binary_path,
-        database_path=mgnify_database_path)
-    self.hhsearch_pdb70_runner = hhsearch.HHSearch(
-        binary_path=hhsearch_binary_path,
-        databases=[pdb70_database_path])
-    self.template_featurizer = template_featurizer
-    self.mgnify_max_hits = mgnify_max_hits
-    self.uniref_max_hits = uniref_max_hits
-
-  def process(self, input_fasta_path: str, msa_output_dir: str) -> FeatureDict:
+  def process(self, data_path:str) -> FeatureDict:
     """Runs alignment tools on the input sequence and creates features."""
-    with open(input_fasta_path) as f:
+    with open(data_path + '6y4f.fasta', 'r') as f:
       input_fasta_str = f.read()
     input_seqs, input_descs = parsers.parse_fasta(input_fasta_str)
-    if len(input_seqs) != 1:
-      raise ValueError(
-          f'More than one input sequence found in {input_fasta_path}.')
+
     input_sequence = input_seqs[0]
     input_description = input_descs[0]
     num_res = len(input_sequence)
 
-    jackhmmer_uniref90_result = self.jackhmmer_uniref90_runner.query(
-        input_fasta_path)
-    jackhmmer_mgnify_result = self.jackhmmer_mgnify_runner.query(
-        input_fasta_path)
-
-    uniref90_msa_as_a3m = parsers.convert_stockholm_to_a3m(
-        jackhmmer_uniref90_result['sto'], max_sequences=self.uniref_max_hits)
-    hhsearch_result = self.hhsearch_pdb70_runner.query(uniref90_msa_as_a3m)
-
-    uniref90_out_path = os.path.join(msa_output_dir, 'uniref90_hits.sto')
-    with open(uniref90_out_path, 'w') as f:
-      f.write(jackhmmer_uniref90_result['sto'])
-
-    mgnify_out_path = os.path.join(msa_output_dir, 'mgnify_hits.sto')
-    with open(mgnify_out_path, 'w') as f:
-      f.write(jackhmmer_mgnify_result['sto'])
+    with open(data_path + 'msas/uniref90_hits.sto', 'r') as f:
+      jackhmmer_uniref90_result_sto = f.read()
+    with open(data_path + 'msas/mgnify_hits.sto', 'r') as f:
+      jackhmmer_mgnify_result_sto = f.read()
+    with open(data_path + 'msas/bfd_uniclust_hits.a3m', 'r') as f:
+      hhblits_bfd_uniclust_result_a3m = f.read()
 
     uniref90_msa, uniref90_deletion_matrix = parsers.parse_stockholm(
-        jackhmmer_uniref90_result['sto'])
+        jackhmmer_uniref90_result_sto)
     mgnify_msa, mgnify_deletion_matrix = parsers.parse_stockholm(
-        jackhmmer_mgnify_result['sto'])
-    hhsearch_hits = parsers.parse_hhr(hhsearch_result)
+        jackhmmer_mgnify_result_sto)
     mgnify_msa = mgnify_msa[:self.mgnify_max_hits]
     mgnify_deletion_matrix = mgnify_deletion_matrix[:self.mgnify_max_hits]
 
-    hhblits_bfd_uniclust_result = self.hhblits_bfd_uniclust_runner.query(
-        input_fasta_path)
-
-    bfd_out_path = os.path.join(msa_output_dir, 'bfd_uniclust_hits.a3m')
-    with open(bfd_out_path, 'w') as f:
-      f.write(hhblits_bfd_uniclust_result['a3m'])
-
     bfd_msa, bfd_deletion_matrix = parsers.parse_a3m(
-        hhblits_bfd_uniclust_result['a3m'])
+        hhblits_bfd_uniclust_result_a3m)
 
-    templates_result = self.template_featurizer.get_templates(
-        query_sequence=input_sequence,
-        query_pdb_code=None,
-        query_release_date=None,
-        hhr_hits=hhsearch_hits)
+    with open(data_path + 'template_features.pkl', 'rb') as f:
+      template_features = pickle.load(f)
 
     sequence_features = make_sequence_features(
         sequence=input_sequence,
@@ -175,4 +125,4 @@ class DataPipeline:
                            bfd_deletion_matrix,
                            mgnify_deletion_matrix))
 
-    return {**sequence_features, **msa_features, **templates_result.features}
+    return {**sequence_features, **msa_features, **template_features}

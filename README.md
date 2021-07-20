@@ -3,11 +3,11 @@
 
 # AlphaFold
 
-This repository contains a minimal version of DeepMind's AlphaFold 2 model, that runs the model with minimal data and third-party resources, for a particular protein sequence [6y4f](https://www.rcsb.org/structure/6Y4F).
+This repository contains a minimal example of DeepMind's AlphaFold 2 model, that runs the model with no data and third-party requirements, for a particular protein sequence [6y4f](https://www.rcsb.org/structure/6Y4F). This repository uses their code published at `deepmind/alphafold`.
 
 The model was run using a fasta sequence from the link above on a non-gpu based google cloud instance. The input features from the data pipeline are provided in the `6y4f` folder.
 
-# Setup
+## Setup
 
 ```bash
 
@@ -47,9 +47,9 @@ rm "${ROOT_DIR}/${BASENAME}"
 
 ## Running AlphaFold
 
-Writeup in progress.
+Running `replication_script.py` should output the following expected outputs.
 
-### AlphaFold output
+## AlphaFold output
 
 The outputs will be in a subfolder of `output_dir` in `run_docker.py`. They
 include the computed MSAs, unrelaxed structures, relaxed structures, ranked
@@ -100,7 +100,7 @@ The contents of each output file are as follows:
     distograms and pLDDT scores. If using the pTM models then the pTM logits
     will also be contained in this file.
 
-The replicated outputs of this repository are shown below.
+The replicated outputs of this repository are shown below (to be tested).
 
 ```python
 from Bio.PDB import PDBParser
@@ -125,7 +125,7 @@ This is not an officially supported Google product.
 
 Copyright 2021 DeepMind Technologies Limited.
 
-### AlphaFold Code License
+## AlphaFold Code License
 
 Licensed under the Apache License, Version 2.0 (the "License"); you may not use
 this file except in compliance with the License. You may obtain a copy of the
@@ -136,7 +136,7 @@ under the License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR
 CONDITIONS OF ANY KIND, either express or implied. See the License for the
 specific language governing permissions and limitations under the License.
 
-### Model Parameters License
+## Model Parameters License
 
 The AlphaFold parameters are made available for non-commercial use only, under
 the terms of the Creative Commons Attribution-NonCommercial 4.0 International

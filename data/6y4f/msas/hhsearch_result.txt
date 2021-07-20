@@ -1,0 +1,160 @@
+Query         6Y4F_1|Chain A|Fimbrial adhesin|Proteus mirabilis (strain HI4320) (529507)
+Match_columns 141
+No_of_seqs    104 out of 118
+Neff          4.87801
+Searched_HMMs 80799
+Date          Tue Jul 20 15:57:05 2021
+Command       /usr/bin/hhsearch -i /tmp/tmph26ydei4/query.a3m -o /tmp/tmph26ydei4/output.hhr -maxseq 1000000 -d /mnt/pdb70_database_path/pdb70 
+
+ No Hit                             Prob E-value P-value  Score    SS Cols Query HMM  Template HMM
+  1 5NC8_A Potassium efflux system   7.6 3.7E+02  0.0046   21.8   0.0   17   29-46    217-233 (237)
+  2 2O8I_A Hypothetical protein At   7.1 4.1E+02   0.005   21.8   0.0   22   67-88     95-116 (165)
+  3 2OOJ_B Hypothetical protein; S   5.7 5.3E+02  0.0066   20.7   0.0   15   15-29      6-20  (141)
+  4 2MFP_A EC protein I/II; Metall   5.7 5.4E+02  0.0067   16.2   0.0   17   30-46      7-23  (31)
+  5 5UOU_A 2-oxo-4-hydroxy-4-carbo   5.3   6E+02  0.0074   20.7   0.0   21   68-88     98-118 (166)
+  6 2AL3_A TUG long isoform; TUG U   5.0 6.4E+02   0.008   17.7   0.0   35   64-98     24-59  (90)
+  7 1AY7_B GUANYL-SPECIFIC RIBONUC   4.8 6.7E+02  0.0083   17.6   0.0   22   65-86      6-27  (89)
+  8 3O7H_B OHCU decarboxylase; dec   4.8 6.8E+02  0.0084   21.1   0.0   21   68-88    121-141 (189)
+  9 3O7I_A OHCU decarboxylase; dec   4.8 6.8E+02  0.0084   21.1   0.0   21   68-88    121-141 (189)
+ 10 2ZA4_B Ribonuclease (E.C.3.1.2   4.8 6.8E+02  0.0084   17.6   0.0   22   65-86      7-28  (90)
+
+No 1
+>5NC8_A Potassium efflux system protein; KTN/RCK domain, Kef, AMP, Potassium; HET: AMP; 3.09A {Shewanella denitrificans OS217}
+Probab=7.63  E-value=3.7e+02  Score=21.81  Aligned_cols=17  Identities=29%  Similarity=0.430  Sum_probs=0.0  Template_Neff=9.600
+
+Q 6Y4F_1|Chain     29 TSGILNPCYGWPVCYVTV   46 (141)
+Q Consensus        29 ~~~tpNPCyg~~~Cyi~I   46 (141)
+                      ...-+|||.|. .|.-.-
+T Consensus       217 ~~~~~~~~~~~-~~~~~~  233 (237)
+T 5NC8_A          217 AQERLNTCKGG-DCLEHH  233 (237)
+T ss_dssp             ------------------
+T ss_pred             HHHHhccCCcc-cccccc
+Confidence            34579999984 565443
+
+
+No 2
+>2O8I_A Hypothetical protein Atu2327; Atu2327, Agrobacterium tumefaciens str. C58; 2.6A {Agrobacterium tumefaciens str.} SCOP: a.288.1.1
+Probab=7.08  E-value=4.1e+02  Score=21.78  Aligned_cols=22  Identities=9%  Similarity=0.258  Sum_probs=17.6  Template_Neff=6.600
+
+Q 6Y4F_1|Chain     67 EKLRTLAEVRDVVLKNRSFPIE   88 (141)
+Q Consensus        67 ~~y~T~~ev~~~~~~~~~~P~~   88 (141)
+                      +.+..+.++-++|.++++|||-
+T Consensus        95 ~~~~~l~~lN~~Y~~kFGfpFI  116 (165)
+T 2O8I_A           95 QEHARFTQLNSAYTEKFGFPFI  116 (165)
+T ss_dssp             HHHHHHHHHHHHHHHHHSSCCC
+T ss_pred             HHHHHHHHHHHHHHHHHCCCeE
+Confidence            4566777788889999999994
+
+
+No 3
+>2OOJ_B Hypothetical protein; STRUCTURAL GENOMICS, JOINT CENTER FOR; 1.84A {Shewanella oneidensis} SCOP: b.159.2.1
+Probab=5.75  E-value=5.3e+02  Score=20.68  Aligned_cols=15  Identities=7%  Similarity=0.016  Sum_probs=11.3  Template_Neff=6.300
+
+Q 6Y4F_1|Chain     15 NATYTYVIERWDPET   29 (141)
+Q Consensus        15 ~~~Y~~~I~~Wd~e~   29 (141)
+                      .++=+|+|..||+++
+T Consensus         6 ~~~~tF~v~~W~e~~   20 (141)
+T 2OOJ_B            6 KVTGKFDVKLTPENA   20 (141)
+T ss_dssp             EEEEEEEEEEEEECC
+T ss_pred             eEEEEEEEeeccCcc
+Confidence            345689999999653
+
+
+No 4
+>2MFP_A EC protein I/II; Metallothionein, Metal-thiolate cluster, Backbone cyclized; HET: CD; NMR {Triticum aestivum}
+Probab=5.66  E-value=5.4e+02  Score=16.18  Aligned_cols=17  Identities=35%  Similarity=0.565  Sum_probs=12.9  Template_Neff=2.400
+
+Q 6Y4F_1|Chain     30 SGILNPCYGWPVCYVTV   46 (141)
+Q Consensus        30 ~~tpNPCyg~~~Cyi~I   46 (141)
+                      -+-|.||-|...|....
+T Consensus         7 CGCpvPCPGG~aCRC~~   23 (31)
+T 2MFP_A            7 CGCAVPCPGGTGCRCTS   23 (31)
+T ss_dssp             GTSCSSCCSSTTCTTSS
+T ss_pred             CCCccCCCCCCceeccc
+Confidence            35689999998886654
+
+
+No 5
+>5UOU_A 2-oxo-4-hydroxy-4-carboxy-5-ureidoimidazoline (OHCU) decarboxylase; 2-oxo-4-hydroxy-4-carboxy-5-ureidoimidazoline decarboxylase, Klebsiella pneumoniae subsp; HET: MSE; 1.5A {Klebsiella pneumoniae subsp. pneumoniae (strain ATCC 700721 / MGH 78578)}
+Probab=5.26  E-value=6e+02  Score=20.69  Aligned_cols=21  Identities=10%  Similarity=-0.205  Sum_probs=15.0  Template_Neff=7.000
+
+Q 6Y4F_1|Chain     68 KLRTLAEVRDVVLKNRSFPIE   88 (141)
+Q Consensus        68 ~y~T~~ev~~~~~~~~~~P~~   88 (141)
+                      .+..+.++-++|.++++|||-
+T Consensus        98 ~~~~L~~lN~~Y~~kFGfpFv  118 (166)
+T 5UOU_A           98 LAQALREGNARYEARFGRVFL  118 (166)
+T ss_dssp             HHHHHHHHHHHHHHHHSSCCC
+T ss_pred             HHHHHHHHHHHHHHHHCCCeE
+Confidence            344555566779999999984
+
+
+No 6
+>2AL3_A TUG long isoform; TUG UBL1 Insulin, ENDOCYTOSIS-EXOCYTOSIS COMPLEX; NMR {Mus musculus} SCOP: d.15.1.2
+Probab=4.96  E-value=6.4e+02  Score=17.69  Aligned_cols=35  Identities=11%  Similarity=0.143  Sum_probs=25.6  Template_Neff=8.300
+
+Q 6Y4F_1|Chain     64 ARIEKLRTLAEVRDVVLKNRSFPIE-GQTTHRGPSL   98 (141)
+Q Consensus        64 ~~i~~y~T~~ev~~~~~~~~~~P~~-g~t~H~G~~i   98 (141)
+                      ..+..-.|+++|.+++.++..+|.. ....|.|..+
+T Consensus        24 i~v~~~t~i~~i~~~~~~~~~l~~~~~~L~~~G~~l   59 (90)
+T 2AL3_A           24 VKVTPSTVLLQVLEDTCRRQDFNPSEYDLKFQRTVL   59 (90)
+T ss_dssp             ECCCTTSBHHHHHHHHHHHTTCCGGGCEEEETTEEE
+T ss_pred             EECCCCCcHHHHHHHHHHHcCCCHHhEEEEECCEEc
+Confidence            5677888999999988877777764 3455666555
+
+
+No 7
+>1AY7_B GUANYL-SPECIFIC RIBONUCLEASE SA, BARSTAR; RIBONUCLEASE, INHIBITOR, STREPTOMYCES AUREOFACIENS, COMPLEX; 1.7A {Streptomyces aureofaciens} SCOP: c.9.1.1
+Probab=4.82  E-value=6.7e+02  Score=17.57  Aligned_cols=22  Identities=18%  Similarity=0.487  Sum_probs=17.0  Template_Neff=8.300
+
+Q 6Y4F_1|Chain     65 RIEKLRTLAEVRDVVLKNRSFP   86 (141)
+Q Consensus        65 ~i~~y~T~~ev~~~~~~~~~~P   86 (141)
+                      +..+.+|.+|+.+++.+...||
+T Consensus         6 dg~~i~~~~~~~~~l~~~l~~p   27 (89)
+T 1AY7_B            6 NGEQIRSISDLHQTLKKELALP   27 (89)
+T ss_dssp             EGGGCCSHHHHHHHHHHHTTCC
+T ss_pred             eCccCCCHHHHHHHHHHHhCCC
+Confidence            4456788889988887777777
+
+
+No 8
+>3O7H_B OHCU decarboxylase; decarboxylase, LYASE; 1.79A {Klebsiella pneumoniae subsp. pneumoniae}
+Probab=4.76  E-value=6.8e+02  Score=21.09  Aligned_cols=21  Identities=10%  Similarity=-0.205  Sum_probs=15.3  Template_Neff=6.400
+
+Q 6Y4F_1|Chain     68 KLRTLAEVRDVVLKNRSFPIE   88 (141)
+Q Consensus        68 ~y~T~~ev~~~~~~~~~~P~~   88 (141)
+                      .+..+.++-++|.++++|||-
+T Consensus       121 ~~~~L~~lN~~Y~~kFGfpFI  141 (189)
+T 3O7H_B          121 LAQALREGNARYEARFGRVFL  141 (189)
+T ss_dssp             HHHHHHHHHHHHHHHHSSCCC
+T ss_pred             HHHHHHHHHHHHHHHHCCCeE
+Confidence            345556666779999999984
+
+
+No 9
+>3O7I_A OHCU decarboxylase; decarboxylase, Lyase; 1.5A {Klebsiella pneumoniae subsp. pneumoniae}
+Probab=4.76  E-value=6.8e+02  Score=21.09  Aligned_cols=21  Identities=10%  Similarity=-0.205  Sum_probs=15.3  Template_Neff=6.400
+
+Q 6Y4F_1|Chain     68 KLRTLAEVRDVVLKNRSFPIE   88 (141)
+Q Consensus        68 ~y~T~~ev~~~~~~~~~~P~~   88 (141)
+                      .+..+.++-++|.++++|||-
+T Consensus       121 ~~~~L~~lN~~Y~~kFGfpFI  141 (189)
+T 3O7I_A          121 LAQALREGNARYEARFGRVFL  141 (189)
+T ss_dssp             HHHHHHHHHHHHHHHHSSCCC
+T ss_pred             HHHHHHHHHHHHHHHHCCCeE
+Confidence            345556666779999999984
+
+
+No 10
+>2ZA4_B Ribonuclease (E.C.3.1.27.-), Barstar; protein-protein complex, Endonuclease, Genetically modified; 1.58A {Bacillus amyloliquefaciens}
+Probab=4.76  E-value=6.8e+02  Score=17.63  Aligned_cols=22  Identities=18%  Similarity=0.487  Sum_probs=16.9  Template_Neff=8.200
+
+Q 6Y4F_1|Chain     65 RIEKLRTLAEVRDVVLKNRSFP   86 (141)
+Q Consensus        65 ~i~~y~T~~ev~~~~~~~~~~P   86 (141)
+                      +..+.+|.+++.+++.+...||
+T Consensus         7 dg~~i~~~~~~~~~l~~~l~~P   28 (90)
+T 2ZA4_B            7 NGEQIRSISDLHQTLKKELALP   28 (90)
+T ss_dssp             EGGGCCSHHHHHHHHHHHTTCC
+T ss_pred             ECccCCCHHHHHHHHHHHhCCC
+Confidence            4456788888888887777777
+
+
