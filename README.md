@@ -5,7 +5,9 @@
 
 This repository contains a minimal example of DeepMind's AlphaFold 2 model, that runs the model with no data and third-party requirements, for a particular protein sequence [6y4f](https://www.rcsb.org/structure/6Y4F). This repository uses their code published at `deepmind/alphafold`.
 
-The model was run using a fasta sequence from the link above on a non-gpu based google cloud instance. The input features from the data pipeline are provided in the `6y4f` folder.
+This code runs on CPU by assumption, but it can also be run using a GPU (tested using a tensorflow docker image with a cuda-compatible version of jax installed).
+
+The input features from a model run using a fasta sequence from the link above on a non-gpu based google cloud instance are provided in the `6y4f` folder.
 
 ## Setup
 
@@ -68,13 +70,13 @@ The contents of each output file are as follows:
     predicted LDDT (pLDDT), see Jumper et al. 2021, Suppl. Methods 1.9.6 for
     details.
 
-The replicated outputs of this repository are shown below (to be tested).
+The replicated outputs of this repository are shown below (nglviewer outputs images that are displayed in jupyter notebooks).
 
 ```python
 from Bio.PDB import PDBParser
 from nglview import show_biopython 
 
-file_loc = '/Users/adityaravuri/Downloads/'
+file_loc = '...'
 
 def get_view(file):
     return show_biopython(PDBParser().get_structure('6y4f', file_loc + file))

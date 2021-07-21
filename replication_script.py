@@ -1,8 +1,10 @@
 
+import numpy as np
 from alphafold.model import data
 from alphafold.model import model
 from alphafold.model import config
 from alphafold.relax import relax
+from alphafold.common import protein
 from alphafold.data.pipeline import DataPipeline
 
 model_names = [f'model_{i+1}' for i in range(5)]
@@ -38,7 +40,7 @@ for model_name, model_runner in model_runners.items():
     relaxed_pdb_str, _, _ = amber_relaxer.process(prot=unrelaxed_protein)
     relaxed_pdbs[model_name] = relaxed_pdb_str
 
-best_model_name = sorted(plddts.items(), key=lambda x: x[1], reverse=True)[0][0]
+best_model_name = np.argmax(plddts.values())
 with open('data/6y4f/ranked_0.pdb', 'w') as f:
     f.write(relaxed_pdbs[model_name])
 
