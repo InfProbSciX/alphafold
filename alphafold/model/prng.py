@@ -37,9 +37,7 @@ class SafeKey:
       raise RuntimeError('Random key has been used previously.')
 
   def get(self):
-    self._assert_not_used()
-    self._used = True
-    return self._key
+    pass
 
   def split(self, num_keys=2):
     self._assert_not_used()
@@ -48,10 +46,7 @@ class SafeKey:
     return jax.tree_map(SafeKey, tuple(new_keys))
 
   def duplicate(self, num_keys=2):
-    self._assert_not_used()
-    self._used = True
-    return tuple(SafeKey(self._key) for _ in range(num_keys))
-
+    pass
 
 def _safe_key_flatten(safe_key):
   # Flatten transfers "ownership" to the tree

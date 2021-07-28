@@ -79,11 +79,7 @@ class RunModel:
         were set when this class was initialized.
     """
     if not self.params:
-      # Init params randomly.
-      rng = jax.random.PRNGKey(random_seed)
-      self.params = hk.data_structures.to_mutable_dict(
-          self.init(rng, feat))
-      logging.warning('Initialized parameters randomly')
+      pass
 
   def process_features(
       self,
@@ -105,18 +101,10 @@ class RunModel:
           config=self.config,
           random_seed=random_seed)
     else:
-      return features.tf_example_to_features(
-          tf_example=raw_features,
-          config=self.config,
-          random_seed=random_seed)
+      pass
 
   def eval_shape(self, feat: features.FeatureDict) -> jax.ShapeDtypeStruct:
-    self.init_params(feat)
-    logging.info('Running eval_shape with shape(feat) = %s',
-                 tree.map_structure(lambda x: x.shape, feat))
-    shape = jax.eval_shape(self.apply, self.params, jax.random.PRNGKey(0), feat)
-    logging.info('Output shape was %s', shape)
-    return shape
+    pass
 
   def predict(self, feat: features.FeatureDict) -> Mapping[str, Any]:
     """Makes a prediction by inferencing the model on the provided features.

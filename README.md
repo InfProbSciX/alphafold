@@ -5,7 +5,7 @@
 
 This repository contains a minimal example of DeepMind's AlphaFold 2 model, that runs the model with no data and third-party requirements, for a particular protein sequence [6y4f](https://www.rcsb.org/structure/6Y4F). This repository uses their code published at `deepmind/alphafold`.
 
-This code runs on CPU by assumption, but it can also be run using a GPU (tested using a tensorflow docker image with a cuda-compatible version of jax installed).
+This code runs on CPU by assumption, but it can also be run using a GPU (tested using a tensorflow-gpu docker image with a cuda-compatible version of jax installed).
 
 The input features from a model run using a fasta sequence from the link above on a non-gpu based google cloud instance are provided in the `6y4f` folder.
 
@@ -18,7 +18,9 @@ conda install -y -c conda-forge openmm=7.5.1 pdbfixer
 pip install -r requirements.txt
 
 cd ~/miniconda3/envs/alphafold/lib/python3.7/site-packages
-patch -p0 < .../openmm.patch && cd -
+patch -p0 < ~/alphafold/openmm.patch && cd -
+
+# pip install --upgrade jax jaxlib==0.1.69+cuda111 -f https://storage.googleapis.com/jax-releases/jax_releases.html
 # download model params below
 ```
 

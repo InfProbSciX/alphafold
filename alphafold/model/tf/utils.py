@@ -15,15 +15,6 @@
 """Shared utilities for various components."""
 import tensorflow.compat.v1 as tf
 
-
-def tf_combine_mask(*masks):
-  """Take the intersection of float-valued masks."""
-  ret = 1
-  for m in masks:
-    ret *= m
-  return ret
-
-
 class SeedMaker(object):
   """Return unique seeds."""
 

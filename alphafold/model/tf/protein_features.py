@@ -69,16 +69,6 @@ FEATURES = {
 FEATURE_TYPES = {k: v[0] for k, v in FEATURES.items()}
 FEATURE_SIZES = {k: v[1] for k, v in FEATURES.items()}
 
-
-def register_feature(name: str,
-                     type_: tf.dtypes.DType,
-                     shape_: Tuple[Union[str, int]]):
-  """Register extra features used in custom datasets."""
-  FEATURES[name] = (type_, shape_)
-  FEATURE_TYPES[name] = type_
-  FEATURE_SIZES[name] = shape_
-
-
 def shape(feature_name: str,
           num_residues: int,
           msa_length: int,

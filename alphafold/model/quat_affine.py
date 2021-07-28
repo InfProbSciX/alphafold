@@ -113,21 +113,6 @@ def rot_to_quat(rot, unstack_inputs=False):
   _, qs = jnp.linalg.eigh(k)
   return qs[..., -1]
 
-
-def rot_list_to_tensor(rot_list):
-  """Convert list of lists to rotation tensor."""
-  return jnp.stack(
-      [jnp.stack(rot_list[0], axis=-1),
-       jnp.stack(rot_list[1], axis=-1),
-       jnp.stack(rot_list[2], axis=-1)],
-      axis=-2)
-
-
-def vec_list_to_tensor(vec_list):
-  """Convert list to vector tensor."""
-  return jnp.stack(vec_list, axis=-1)
-
-
 def quat_to_rot(normalized_quat):
   """Convert a normalized quaternion to a rotation matrix."""
   rot_tensor = jnp.sum(
@@ -148,16 +133,6 @@ def quat_multiply_by_vec(quat, vec):
       quat[..., :, None, None] *
       vec[..., None, :, None],
       axis=(-3, -2))
-
-
-def quat_multiply(quat1, quat2):
-  """Multiply a quaternion by another quaternion."""
-  return jnp.sum(
-      QUAT_MULTIPLY *
-      quat1[..., :, None, None] *
-      quat2[..., None, :, None],
-      axis=(-3, -2))
-
 
 def apply_rot_to_vec(rot, vec, unstack=False):
   """Multiply rotation matrix by a vector."""
@@ -225,12 +200,7 @@ class QuatAffine(object):
         axis=-1)
 
   def apply_tensor_fn(self, tensor_fn):
-    """Return a new QuatAffine with tensor_fn applied (e.g. stop_gradient)."""
-    return QuatAffine(
-        tensor_fn(self.quaternion),
-        [tensor_fn(x) for x in self.translation],
-        rotation=[[tensor_fn(x) for x in row] for row in self.rotation],
-        normalize=False)
+    pass
 
   def apply_rotation_tensor_fn(self, tensor_fn):
     """Return a new QuatAffine with tensor_fn applied to the rotation part."""

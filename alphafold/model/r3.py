@@ -52,11 +52,6 @@ Rots = collections.namedtuple('Rots', ['xx', 'xy', 'xz',
 # array of translations.
 Rigids = collections.namedtuple('Rigids', ['rot', 'trans'])
 
-
-def squared_difference(x, y):
-  return jnp.square(x - y)
-
-
 def invert_rigids(r: Rigids) -> Rigids:
   """Computes group inverse of rigid transformations 'r'."""
   inv_rots = invert_rots(r.rot)
@@ -97,13 +92,6 @@ def rigids_from_3_points(
 
   return Rigids(rot=m, trans=origin)
 
-
-def rigids_from_list(l: List[jnp.ndarray]) -> Rigids:
-  """Converts flat list of arrays to rigid transformations."""
-  assert len(l) == 12
-  return Rigids(Rots(*(l[:9])), Vecs(*(l[9:])))
-
-
 def rigids_from_quataffine(a: quat_affine.QuatAffine) -> Rigids:
   """Converts QuatAffine object to the corresponding Rigids object."""
   return Rigids(Rots(*tree.flatten(a.rotation)),
@@ -130,28 +118,6 @@ def rigids_from_tensor4x4(
            m[..., 2, 0], m[..., 2, 1], m[..., 2, 2]),
       Vecs(m[..., 0, 3], m[..., 1, 3], m[..., 2, 3]))
 
-
-def rigids_from_tensor_flat9(
-    m: jnp.ndarray  # shape (..., 9)
-) -> Rigids:  # shape (...)
-  """Flat9 encoding: first two columns of rotation matrix + translation."""
-  assert m.shape[-1] == 9
-  e0 = Vecs(m[..., 0], m[..., 1], m[..., 2])
-  e1 = Vecs(m[..., 3], m[..., 4], m[..., 5])
-  trans = Vecs(m[..., 6], m[..., 7], m[..., 8])
-  return Rigids(rot=rots_from_two_vecs(e0, e1),
-                trans=trans)
-
-
-def rigids_from_tensor_flat12(
-    m: jnp.ndarray  # shape (..., 12)
-) -> Rigids:  # shape (...)
-  """Flat12 encoding: rotation matrix (9 floats) + translation (3 floats)."""
-  assert m.shape[-1] == 12
-  x = jnp.moveaxis(m, -1, 0)  # Unstack
-  return Rigids(Rots(*x[:9]), Vecs(*x[9:]))
-
-
 def rigids_mul_rigids(a: Rigids, b: Rigids) -> Rigids:
   """Group composition of Rigids 'a' and 'b'."""
   return Rigids(
@@ -167,49 +133,6 @@ def rigids_mul_rots(r: Rigids, m: Rots) -> Rigids:
 def rigids_mul_vecs(r: Rigids, v: Vecs) -> Vecs:
   """Apply rigid transforms 'r' to points 'v'."""
   return vecs_add(rots_mul_vecs(r.rot, v), r.trans)
-
-
-def rigids_to_list(r: Rigids) -> List[jnp.ndarray]:
-  """Turn Rigids into flat list, inverse of 'rigids_from_list'."""
-  return list(r.rot) + list(r.trans)
-
-
-def rigids_to_quataffine(r: Rigids) -> quat_affine.QuatAffine:
-  """Convert Rigids r into QuatAffine, inverse of 'rigids_from_quataffine'."""
-  return quat_affine.QuatAffine(
-      quaternion=None,
-      rotation=[[r.rot.xx, r.rot.xy, r.rot.xz],
-                [r.rot.yx, r.rot.yy, r.rot.yz],
-                [r.rot.zx, r.rot.zy, r.rot.zz]],
-      translation=[r.trans.x, r.trans.y, r.trans.z])
-
-
-def rigids_to_tensor_flat9(
-    r: Rigids  # shape (...)
-) -> jnp.ndarray:  # shape (..., 9)
-  """Flat9 encoding: first two columns of rotation matrix + translation."""
-  return jnp.stack(
-      [r.rot.xx, r.rot.yx, r.rot.zx, r.rot.xy, r.rot.yy, r.rot.zy]
-      + list(r.trans), axis=-1)
-
-
-def rigids_to_tensor_flat12(
-    r: Rigids  # shape (...)
-) -> jnp.ndarray:  # shape (..., 12)
-  """Flat12 encoding: rotation matrix (9 floats) + translation (3 floats)."""
-  return jnp.stack(list(r.rot) + list(r.trans), axis=-1)
-
-
-def rots_from_tensor3x3(
-    m: jnp.ndarray,  # shape (..., 3, 3)
-) -> Rots:  # shape (...)
-  """Convert rotations represented as (3, 3) array to Rots."""
-  assert m.shape[-1] == 3
-  assert m.shape[-2] == 3
-  return Rots(m[..., 0, 0], m[..., 0, 1], m[..., 0, 2],
-              m[..., 1, 0], m[..., 1, 1], m[..., 1, 2],
-              m[..., 2, 0], m[..., 2, 1], m[..., 2, 2])
-
 
 def rots_from_two_vecs(e0_unnormalized: Vecs, e1_unnormalized: Vecs) -> Rots:
   """Create rotation matrices from unnormalized vectors for the x and y-axes.
@@ -307,14 +230,6 @@ def vecs_robust_norm(v: Vecs, epsilon: float = 1e-8) -> jnp.ndarray:
 def vecs_sub(v1: Vecs, v2: Vecs) -> Vecs:
   """Computes v1 - v2."""
   return Vecs(v1.x - v2.x, v1.y - v2.y, v1.z - v2.z)
-
-
-def vecs_squared_distance(v1: Vecs, v2: Vecs) -> jnp.ndarray:
-  """Computes squared euclidean difference between 'v1' and 'v2'."""
-  return (squared_difference(v1.x, v2.x) +
-          squared_difference(v1.y, v2.y) +
-          squared_difference(v1.z, v2.z))
-
 
 def vecs_to_tensor(v: Vecs  # shape (...)
                   ) -> jnp.ndarray:  # shape(..., 3)

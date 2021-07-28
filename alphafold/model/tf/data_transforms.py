@@ -75,12 +75,6 @@ def add_distillation_flag(protein, distillation):
                                            dtype=tf.float32)
   return protein
 
-
-def make_all_atom_aatype(protein):
-  protein['all_atom_aatype'] = protein['aatype']
-  return protein
-
-
 def fix_templates_aatype(protein):
   """Fixes aatype encoding of templates."""
   # Map one-hot to indices.
@@ -199,55 +193,6 @@ def crop_extra_msa(protein, max_extra_msa):
 
   return protein
 
-
-def delete_extra_msa(protein):
-  for k in _MSA_FEATURE_NAMES:
-    if 'extra_' + k in protein:
-      del protein['extra_' + k]
-  return protein
-
-
-@curry1
-def block_delete_msa(protein, config):
-  """Sample MSA by deleting contiguous blocks.
-
-  Jumper et al. (2021) Suppl. Alg. 1 "MSABlockDeletion"
-
-  Arguments:
-    protein: batch dict containing the msa
-    config: ConfigDict with parameters
-
-  Returns:
-    updated protein
-  """
-  num_seq = shape_helpers.shape_list(protein['msa'])[0]
-  block_num_seq = tf.cast(
-      tf.floor(tf.cast(num_seq, tf.float32) * config.msa_fraction_per_block),
-      tf.int32)
-
-  if config.randomize_num_blocks:
-    nb = tf.random.uniform([], 0, config.num_blocks + 1, dtype=tf.int32)
-  else:
-    nb = config.num_blocks
-
-  del_block_starts = tf.random.uniform([nb], 0, num_seq, dtype=tf.int32)
-  del_blocks = del_block_starts[:, None] + tf.range(block_num_seq)
-  del_blocks = tf.clip_by_value(del_blocks, 0, num_seq - 1)
-  del_indices = tf.unique(tf.sort(tf.reshape(del_blocks, [-1])))[0]
-
-  # Make sure we keep the original sequence
-  sparse_diff = tf.sets.difference(tf.range(1, num_seq)[None],
-                                   del_indices[None])
-  keep_indices = tf.squeeze(tf.sparse.to_dense(sparse_diff), 0)
-  keep_indices = tf.concat([[0], keep_indices], axis=0)
-
-  for k in _MSA_FEATURE_NAMES:
-    if k in protein:
-      protein[k] = tf.gather(protein[k], keep_indices)
-
-  return protein
-
-
 @curry1
 def nearest_neighbor_clusters(protein, gap_agreement_weight=0.):
   """Assign each extra MSA sequence to its nearest neighbor in sampled MSA."""
@@ -347,13 +292,6 @@ def make_pseudo_beta(protein, prefix=''):
           protein[prefix + 'all_atom_positions'],
           protein['template_all_atom_masks' if prefix else 'all_atom_mask']))
   return protein
-
-
-@curry1
-def add_constant_field(protein, key, value):
-  protein[key] = tf.convert_to_tensor(value)
-  return protein
-
 
 def shaped_categorical(probs, epsilon=1e-10):
   ds = shape_helpers.shape_list(probs)
@@ -489,15 +427,6 @@ def make_msa_feat(protein):
 @curry1
 def select_feat(protein, feature_list):
   return {k: v for k, v in protein.items() if k in feature_list}
-
-
-@curry1
-def crop_templates(protein, max_templates):
-  for k, v in protein.items():
-    if k.startswith('template_'):
-      protein[k] = v[:max_templates]
-  return protein
-
 
 @curry1
 def random_crop_to_size(protein, crop_size, max_templates, shape_schema,

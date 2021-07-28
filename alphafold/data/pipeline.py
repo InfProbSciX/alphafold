@@ -25,9 +25,6 @@ import numpy as np
 from alphafold.common import residue_constants
 from alphafold.data import parsers
 from alphafold.data import templates
-from alphafold.data.tools import hhblits
-from alphafold.data.tools import hhsearch
-from alphafold.data.tools import jackhmmer
 
 FeatureDict = Mapping[str, np.ndarray]
 
